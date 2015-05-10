@@ -23,3 +23,7 @@ ro.device.gpu=Mali-400MP Single Core
 ro.device.rear_cam=5 Mpix (2592x1944)
 ro.device.front_cam=VGA (640x480)
 ro.device.screen_res=3,8' 800x480 pixels ( ~246 ppi)
+
+# Art tweaks
+dalvik.vm.image-dex2oat-filter=speed
+dalvik.vm.dex2oat-filter=interpret-only

@@ -63,6 +63,7 @@ TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a9 -mfpu=neon -mfloat-abi=softfp
 # Kernel
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_KERNEL_BASE := 0x40000000
+BOARD_CUSTOM_BOOTIMG_MK := device/samsung/codina/shbootimg.mk
 
 # Graphics
 USE_OPENGL_RENDERER := true

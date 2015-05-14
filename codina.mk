@@ -97,12 +97,18 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp \
     persist.service.adb.enable=1
 
-# Charger
+# Charger Prebuilt (temporary solution for lollipop)
+# Use prebuilt charger and images from KitKat
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/lpm.rc:root/lpm.rc
-PRODUCT_PACKAGES += \
-    charger \
-    charger_res_images
+    $(LOCAL_PATH)/prebuilt/charger/charger:root/sbin/charger \
+    $(LOCAL_PATH)/prebuilt/charger/images/battery_0.png:root/res/images/charger/battery_0.png \
+    $(LOCAL_PATH)/prebuilt/charger/images/battery_1.png:root/res/images/charger/battery_1.png \
+    $(LOCAL_PATH)/prebuilt/charger/images/battery_2.png:root/res/images/charger/battery_2.png \
+    $(LOCAL_PATH)/prebuilt/charger/images/battery_3.png:root/res/images/charger/battery_3.png \
+    $(LOCAL_PATH)/prebuilt/charger/images/battery_4.png:root/res/images/charger/battery_4.png \
+    $(LOCAL_PATH)/prebuilt/charger/images/battery_5.png:root/res/images/charger/battery_5.png \
+    $(LOCAL_PATH)/prebuilt/charger/images/battery_charge.png:root/res/images/charger/battery_charge.png \
+    $(LOCAL_PATH)/prebuilt/charger/images/battery_fail.png:root/res/images/charger/battery_fail.png \
 
 # Misc Packages
 PRODUCT_PACKAGES += \

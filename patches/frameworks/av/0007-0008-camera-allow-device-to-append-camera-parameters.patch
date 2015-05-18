@@ -1,0 +1,28 @@
+From 72f514be07ff480c54fca8d1e2fa9057c752247e Mon Sep 17 00:00:00 2001
+From: Shilin Victor <chrono.monochrome@gmail.com>
+Date: Sun, 17 May 2015 00:26:59 +0300
+Subject: [PATCH 7/9] 
+ 0008-camera-allow-device-to-append-camera-parameters.patch
+
+Change-Id: I6d5386c1cd14c8a0b3d9b97ede4bba796b892788
+---
+ services/camera/libcameraservice/device1/CameraHardwareInterface.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/services/camera/libcameraservice/device1/CameraHardwareInterface.h b/services/camera/libcameraservice/device1/CameraHardwareInterface.h
+index e5b3648..3abe138 100644
+--- a/services/camera/libcameraservice/device1/CameraHardwareInterface.h
++++ b/services/camera/libcameraservice/device1/CameraHardwareInterface.h
+@@ -682,6 +682,9 @@ private:
+ 
+     static int __set_usage(struct preview_stream_ops* w, int usage)
+     {
++#ifdef STE_HARDWARE
++        usage |= GRALLOC_USAGE_PRIVATE_0;
++#endif
+         ANativeWindow *a = anw(w);
+         return native_window_set_usage(a, usage);
+     }
+-- 
+1.9.1
+

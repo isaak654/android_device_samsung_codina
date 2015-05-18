@@ -1,7 +1,7 @@
-From 783d04bcab40bab2bc7e08dbd9e9f5c9ef1feb71 Mon Sep 17 00:00:00 2001
+From b0a90773eaa9afcf80015ed8f0ab1c83e99c6e1d Mon Sep 17 00:00:00 2001
 From: Shilin Victor <chrono.monochrome@gmail.com>
 Date: Sun, 10 May 2015 18:55:00 +0300
-Subject: [PATCH 2/6] frameworks-base_GPS-init-fix.patch
+Subject: [PATCH 2/4] frameworks-base_GPS-init-fix.patch
 
 Change-Id: If7f47f435da5c621b0c2b9924f7bb6c7b55fd26e
 ---
@@ -9,10 +9,10 @@ Change-Id: If7f47f435da5c621b0c2b9924f7bb6c7b55fd26e
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/services/core/java/com/android/server/location/GpsLocationProvider.java b/services/core/java/com/android/server/location/GpsLocationProvider.java
-index 7816ce4..3c401d6 100644
+index bdd7d23..79ed769 100644
 --- a/services/core/java/com/android/server/location/GpsLocationProvider.java
 +++ b/services/core/java/com/android/server/location/GpsLocationProvider.java
-@@ -985,11 +985,11 @@ public class GpsLocationProvider implements LocationProviderInterface {
+@@ -1119,11 +1119,11 @@ public class GpsLocationProvider implements LocationProviderInterface {
                  Log.e(TAG, "unable to parse SUPL_PORT: " + portString);
              }
          }

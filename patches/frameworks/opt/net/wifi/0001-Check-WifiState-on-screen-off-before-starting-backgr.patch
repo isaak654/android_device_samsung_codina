@@ -1,4 +1,4 @@
-From 99e9ca0d3116858ac5111042ec302172cef12c71 Mon Sep 17 00:00:00 2001
+From 687102df7f18fdeb5b4818cd7d583950e79787fc Mon Sep 17 00:00:00 2001
 From: Meticulus <theonejohnnyd@gmail.com>
 Date: Thu, 11 Dec 2014 02:11:47 +0100
 Subject: [PATCH] Check WifiState on screen off before starting background scan
@@ -9,10 +9,10 @@ Change-Id: I85d8e696631b6ef4618441e0ac7b573213a7235d
  1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/service/java/com/android/server/wifi/WifiStateMachine.java b/service/java/com/android/server/wifi/WifiStateMachine.java
-index fb9e9fd..853ab2b 100644
+index 4676be2..5aae1ef 100755
 --- a/service/java/com/android/server/wifi/WifiStateMachine.java
 +++ b/service/java/com/android/server/wifi/WifiStateMachine.java
-@@ -4775,8 +4775,11 @@ public class WifiStateMachine extends StateMachine {
+@@ -4934,8 +4934,11 @@ public class WifiStateMachine extends StateMachine {
                      startNextBatchedScan();
                      break;
                  case CMD_SCREEN_STATE_CHANGED:

@@ -1,17 +1,18 @@
-From f0d5be1cf12667432a933bcd58d358888abe6dce Mon Sep 17 00:00:00 2001
-From: Meticulus <theonejohnnyd@gmail.com>
-Date: Fri, 10 Oct 2014 16:25:16 -0500
-Subject: [PATCH] STE-OMX Fix Streaming Video
+From c11ae330169e4ef7fdb4a0bdf6dc4297b994e838 Mon Sep 17 00:00:00 2001
+From: Shilin Victor <chrono.monochrome@gmail.com>
+Date: Sun, 17 May 2015 00:26:41 +0300
+Subject: [PATCH 4/9] 0005-STE-OMX-Fix-Streaming-Video.patch
 
-Don't store metadata in buffers. We don't support that at all.
-
-Change-Id: I8cafed3e425d822e710d97971b2501ee75bbd069
+Change-Id: I922690a5f809df34b623d0bb5e3459dc8e2a7cfb
 ---
  media/libstagefright/ACodec.cpp | 4 ++++
  1 file changed, 4 insertions(+)
+ mode change 100755 => 100644 media/libstagefright/ACodec.cpp
 
 diff --git a/media/libstagefright/ACodec.cpp b/media/libstagefright/ACodec.cpp
-index 33c1bec..ce6f2f6 100755
+old mode 100755
+new mode 100644
+index 65e5d32..338810c
 --- a/media/libstagefright/ACodec.cpp
 +++ b/media/libstagefright/ACodec.cpp
 @@ -596,11 +596,15 @@ status_t ACodec::allocateBuffersOnPort(OMX_U32 portIndex) {
@@ -19,7 +20,7 @@ index 33c1bec..ce6f2f6 100755
      status_t err;
      if (mNativeWindow != NULL && portIndex == kPortIndexOutput) {
 +#ifdef STE_HARDWARE
-+	err = allocateOutputBuffersFromNativeWindow();
++        err = allocateOutputBuffersFromNativeWindow();
 +#else
          if (mStoreMetaDataInOutputBuffers) {
              err = allocateOutputMetaDataBuffers();

@@ -1,0 +1,29 @@
+From 2d9fe66327ef79b9c9e0570f8cb511311a83b950 Mon Sep 17 00:00:00 2001
+From: Shilin Victor <chrono.monochrome@gmail.com>
+Date: Sat, 16 May 2015 15:50:07 +0300
+Subject: [PATCH 1/4] 0001-frameworks-base_Fix-OK-Google.patch.patch
+
+Change-Id: I08c1434b634d0352d773e87a793a089ec951753b
+---
+ core/jni/android_media_AudioRecord.cpp | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/core/jni/android_media_AudioRecord.cpp b/core/jni/android_media_AudioRecord.cpp
+index a8020b4..963e0ab 100644
+--- a/core/jni/android_media_AudioRecord.cpp
++++ b/core/jni/android_media_AudioRecord.cpp
+@@ -219,6 +219,11 @@ android_media_AudioRecord_setup(JNIEnv *env, jobject thiz, jobject weak_this,
+     paa->source = (audio_source_t) env->GetIntField(jaa, javaAudioAttrFields.fieldRecSource);
+     paa->flags = (audio_flags_mask_t)env->GetIntField(jaa, javaAudioAttrFields.fieldFlags);
+ 
++
++   if (paa->source == 1999)
++      paa->source == (audio_source_t)1;
++
++
+     //overwrite bytesPerSample for compress VOIP use cases
+     if ((paa->source == AUDIO_SOURCE_VOICE_COMMUNICATION) &&
+         (format != AUDIO_FORMAT_PCM_16_BIT)) {
+-- 
+1.9.1
+

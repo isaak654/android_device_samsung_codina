@@ -1,7 +1,7 @@
-From a86df3188455ddb9fdd5d3e18ff8e9bdf8093c20 Mon Sep 17 00:00:00 2001
+From f9fdadaf128e89a35ffb27e32425b65d83637ee4 Mon Sep 17 00:00:00 2001
 From: Shilin Victor <chrono.monochrome@gmail.com>
 Date: Mon, 11 May 2015 23:07:54 +0300
-Subject: [PATCH 5/5] libEGL: workaround for google bug 10194508
+Subject: [PATCH 4/7] libEGL: workaround for google bug 10194508
 
 Change-Id: Ib55ee6cc0659fa7474cc3bc02f3a52affda66e8a
 ---

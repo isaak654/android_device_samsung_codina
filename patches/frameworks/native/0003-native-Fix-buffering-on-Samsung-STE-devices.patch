@@ -1,7 +1,7 @@
-From c1b30147635eded20558e25939dc97b3f5730975 Mon Sep 17 00:00:00 2001
+From a3fe0058bdeac5b252e78d247edc04663b386fb5 Mon Sep 17 00:00:00 2001
 From: Shilin Victor <chrono.monochrome@gmail.com>
 Date: Mon, 11 May 2015 23:07:09 +0300
-Subject: [PATCH 4/5] native:Fix buffering on Samsung STE devices
+Subject: [PATCH 3/7] native:Fix buffering on Samsung STE devices
 
 Change-Id: I56457e8ed7523cb79f15effe8fbb574f72138e18
 ---

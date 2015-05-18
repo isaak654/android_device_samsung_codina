@@ -1,0 +1,110 @@
+From 7c0edaf463d6d639b07776ed4c623ba23d054169 Mon Sep 17 00:00:00 2001
+From: Shilin Victor <chrono.monochrome@gmail.com>
+Date: Sat, 16 May 2015 17:08:15 +0300
+Subject: [PATCH 5/7] Revert "0001-STE-OMX-Fix-video-playback.patch"
+
+This reverts commit 4f712529944cace966ded72a1a888bb2352ec2fa.
+---
+ include/gui/GLConsumer.h |  5 -----
+ libs/gui/GLConsumer.cpp  | 48 +++++++++++++++++++++++-------------------------
+ 2 files changed, 23 insertions(+), 30 deletions(-)
+
+diff --git a/include/gui/GLConsumer.h b/include/gui/GLConsumer.h
+index d4fb0dc..2bf5aa6 100644
+--- a/include/gui/GLConsumer.h
++++ b/include/gui/GLConsumer.h
+@@ -321,11 +321,6 @@ private:
+         const native_handle* graphicBufferHandle() {
+             return mGraphicBuffer == NULL ? NULL : mGraphicBuffer->handle;
+         }
+-#ifdef STE_HARDWARE
+-        void setGraphicBuffer(sp<GraphicBuffer> graphicBuffer) {
+-            mGraphicBuffer = graphicBuffer;
+-        }
+-#endif
+ 
+     private:
+         // Only allow instantiation using ref counting.
+diff --git a/libs/gui/GLConsumer.cpp b/libs/gui/GLConsumer.cpp
+index 1ea6fd9..802ab6a 100644
+--- a/libs/gui/GLConsumer.cpp
++++ b/libs/gui/GLConsumer.cpp
+@@ -451,11 +451,21 @@ status_t GLConsumer::updateAndReleaseLocked(const BufferQueue::BufferItem& item)
+         return err;
+     }
+ 
++    // Ensure we have a valid EglImageKHR for the slot, creating an EglImage
++    // if nessessary, for the gralloc buffer currently in the slot in
++    // ConsumerBase.
++    // We may have to do this even when item.mGraphicBuffer == NULL (which
++    // means the buffer was previously acquired).
+ 
+ #ifdef STE_HARDWARE
+     sp<GraphicBuffer> textureBuffer;
+     if (mSlots[buf].mGraphicBuffer->getPixelFormat() == HAL_PIXEL_FORMAT_YCBCR42XMBN
+      || mSlots[buf].mGraphicBuffer->getPixelFormat() == HAL_PIXEL_FORMAT_YCbCr_420_P) {
++        /* deallocate image each time .... */
++        /*if (&mEglSlots[buf].mEglImage != EGL_NO_IMAGE_KHR) {
++            eglDestroyImageKHR(mEglDisplay, &mEglSlots[buf].mEglImage);
++            mEglSlots[buf].mEglImage = (android::GLConsumer::EglImage*)EGL_NO_IMAGE_KHR;
++        }*/
+         /* test if source and convert buffer size are ok */
+         if (mSlots[buf].mGraphicBuffer != NULL && mBlitSlots[mNextBlitSlot] != NULL) {
+             sp<GraphicBuffer> srcBuf = mSlots[buf].mGraphicBuffer;
+@@ -496,40 +506,28 @@ status_t GLConsumer::updateAndReleaseLocked(const BufferQueue::BufferItem& item)
+             return UNKNOWN_ERROR;
+         }
+         textureBuffer = mBlitSlots[mNextBlitSlot];
++        mEglSlots[buf].mEglImage = new EglImage(textureBuffer);
+         mNextBlitSlot = (mNextBlitSlot + 1) % BufferQueue::NUM_BLIT_BUFFER_SLOTS;
+-    } else {
+-         textureBuffer = mSlots[buf].mGraphicBuffer;
+-    }
+- 
+-     // Set EglImage to use the new textureBuffer
+-     mEglSlots[buf].mEglImage->setGraphicBuffer(textureBuffer);
+-#endif
+-    // Ensure we have a valid EglImageKHR for the slot, creating an EglImage
+-    // if nessessary, for the gralloc buffer currently in the slot in
+-    // ConsumerBase.
+-    // We may have to do this even when item.mGraphicBuffer == NULL (which
+-    // means the buffer was previously acquired).
+-
+-#ifdef STE_HARDWARE
+-    // Force EglImage to destroy old eglImage and create a new one
+-    // using textureBuffer.
+-    err = mEglSlots[buf].mEglImage->createIfNeeded(mEglDisplay, item.mCrop, true);
+-#else
+-     err = mEglSlots[buf].mEglImage->createIfNeeded(mEglDisplay, item.mCrop);
++    } 
+ #endif
+ 
++    err = mEglSlots[buf].mEglImage->createIfNeeded(mEglDisplay, item.mCrop);
++    if (err != NO_ERROR) {
++        ST_LOGW("updateAndRelease: unable to createImage on display=%p slot=%d",
++                mEglDisplay, buf);
++        releaseBufferLocked(buf, mSlots[buf].mGraphicBuffer,
++                mEglDisplay, EGL_NO_SYNC_KHR);
++        return UNKNOWN_ERROR;
++    }
+ 
++    // Do whatever sync ops we need to do before releasing the old slot.
++    err = syncForReleaseLocked(mEglDisplay);
+     if (err != NO_ERROR) {
+         // Release the buffer we just acquired.  It's not safe to
+         // release the old buffer, so instead we just drop the new frame.
+         // As we are still under lock since acquireBuffer, it is safe to
+         // release by slot.
+-#ifdef STE_HARDWARE
+-        releaseBufferLocked(buf, textureBuffer,
+-#else        
+-        releaseBufferLocked(buf, mSlots[buf].mGraphicBuffer,
+-#endif
+-                mEglDisplay, EGL_NO_SYNC_KHR);
++        releaseBufferLocked(buf, mSlots[buf].mGraphicBuffer, mEglDisplay, EGL_NO_SYNC_KHR);
+         return err;
+     }
+ 
+-- 
+1.9.1
+

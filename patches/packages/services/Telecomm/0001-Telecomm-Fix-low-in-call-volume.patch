@@ -1,18 +1,18 @@
-From 6336fd52612eff8211ab9afa7adb6dd70d1276f4 Mon Sep 17 00:00:00 2001
+From 29fdcd88b79097649eb93a163a25d2e01f9a8882 Mon Sep 17 00:00:00 2001
 From: Stefan Berger <s.berger81@gmail.com>
 Date: Sun, 29 Mar 2015 14:38:24 +0200
 Subject: [PATCH] Telecomm: Fix low in-call volume
 
 Change-Id: I62e33492f84e9c9950698313281f60577170a24d
 ---
- .../android/server/telecom/CallAudioManager.java   |   26 ++++++++++++++++++++
+ .../android/server/telecom/CallAudioManager.java   | 26 ++++++++++++++++++++++
  1 file changed, 26 insertions(+)
 
 diff --git a/src/com/android/server/telecom/CallAudioManager.java b/src/com/android/server/telecom/CallAudioManager.java
-index 9daf815..f810f9d 100644
+index 50820b4..fc0475c 100644
 --- a/src/com/android/server/telecom/CallAudioManager.java
 +++ b/src/com/android/server/telecom/CallAudioManager.java
-@@ -328,6 +328,7 @@ final class CallAudioManager extends CallsManagerListenerBase
+@@ -357,6 +357,7 @@ final class CallAudioManager extends CallsManagerListenerBase
              CallsManager.getInstance().onAudioStateChanged(oldAudioState, mAudioState);
              updateAudioForForegroundCall();
          }
@@ -20,7 +20,7 @@ index 9daf815..f810f9d 100644
      }
  
      private void turnOnSpeaker(boolean on) {
-@@ -507,6 +508,7 @@ final class CallAudioManager extends CallsManagerListenerBase
+@@ -530,6 +531,7 @@ final class CallAudioManager extends CallsManagerListenerBase
          if (call != null && call.getConnectionService() != null) {
              call.getConnectionService().onAudioStateChanged(call, mAudioState);
          }
@@ -28,7 +28,7 @@ index 9daf815..f810f9d 100644
      }
  
      /**
-@@ -534,6 +536,30 @@ final class CallAudioManager extends CallsManagerListenerBase
+@@ -556,6 +558,30 @@ final class CallAudioManager extends CallsManagerListenerBase
      }
  
      /**
@@ -60,5 +60,5 @@ index 9daf815..f810f9d 100644
       *
       * @param pw The {@code IndentingPrintWriter} to write the state to.
 -- 
-1.7.9.5
+1.9.1
 

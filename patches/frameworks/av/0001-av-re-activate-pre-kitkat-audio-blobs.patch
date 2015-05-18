@@ -1,21 +1,21 @@
-From 8741a32d2ae6b7b73a27c69d892d32890fba361f Mon Sep 17 00:00:00 2001
+From 7b167fe9e585824c179b28ed6e1a74d56da34994 Mon Sep 17 00:00:00 2001
 From: Shilin Victor <chrono.monochrome@gmail.com>
-Date: Mon, 11 May 2015 23:05:27 +0300
-Subject: [PATCH 12/13] 0001-pre-kitkat-audio-blobs-re-activated.patch
+Date: Sun, 17 May 2015 00:23:44 +0300
+Subject: [PATCH 1/9] av-re-activate-pre-kitkat-audio-blobs
 
-Change-Id: Ife629c6350d64961e6181ba569a560a2838e0e2f
+Change-Id: I0c017580812eb5b9bc375b004462f3c231c641f2
 ---
  services/audiopolicy/Android.mk                         | 4 ++++
- services/audiopolicy/AudioPolicyClientImplLegacy.cpp    | 7 ++++++-
+ services/audiopolicy/AudioPolicyClientImplLegacy.cpp    | 6 +++---
  services/audiopolicy/AudioPolicyInterfaceImplLegacy.cpp | 3 +++
- 3 files changed, 13 insertions(+), 1 deletion(-)
+ 3 files changed, 10 insertions(+), 3 deletions(-)
 
 diff --git a/services/audiopolicy/Android.mk b/services/audiopolicy/Android.mk
-index 188fc89..56ad566 100644
+index 9891860..83a8a43 100644
 --- a/services/audiopolicy/Android.mk
 +++ b/services/audiopolicy/Android.mk
-@@ -38,6 +38,10 @@ LOCAL_SHARED_LIBRARIES += \
-     libaudiopolicymanager
+@@ -109,6 +109,10 @@ ifeq ($(BOARD_HAVE_PRE_KITKAT_AUDIO_POLICY_BLOB),true)
+     LOCAL_CFLAGS += -DHAVE_PRE_KITKAT_AUDIO_POLICY_BLOB
  endif
  
 +ifeq ($(BOARD_HAVE_PRE_KITKAT_AUDIO_BLOB),true)
@@ -26,38 +26,39 @@ index 188fc89..56ad566 100644
      libmedia_helper
  
 diff --git a/services/audiopolicy/AudioPolicyClientImplLegacy.cpp b/services/audiopolicy/AudioPolicyClientImplLegacy.cpp
-index ac935d2..a61cb57 100644
+index 36c85f1..c8aea99 100644
 --- a/services/audiopolicy/AudioPolicyClientImplLegacy.cpp
 +++ b/services/audiopolicy/AudioPolicyClientImplLegacy.cpp
-@@ -130,8 +130,13 @@ audio_io_handle_t aps_open_output_on_module(void *service __unused,
+@@ -125,12 +125,12 @@ audio_io_handle_t aps_open_output_on_module(void *service __unused,
                                                     audio_output_flags_t flags,
                                                     const audio_offload_info_t *offloadInfo)
  {
+-#ifdef HAVE_PRE_KITKAT_AUDIO_POLICY_BLOB
 +#ifdef HAVE_PRE_KITKAT_AUDIO_BLOB
      return open_output(module, pDevices, pSamplingRate, pFormat, pChannelMask,
+                           pLatencyMs, flags, NULL);
+ #else
+-    return open_output(module, pDevices, pSamplingRate, pFormat, pChannelMask,
 -                          pLatencyMs, flags, offloadInfo);
-+                          pLatencyMs, flags, NULL);
-+#else
-+    return open_output(module, pDevices, pSamplingRate, pFormat, pChannelMask,
++     return open_output(module, pDevices, pSamplingRate, pFormat, pChannelMask,
 +                           pLatencyMs, flags, offloadInfo);
-+#endif
+ #endif
  }
  
- audio_io_handle_t aps_open_dup_output(void *service __unused,
 diff --git a/services/audiopolicy/AudioPolicyInterfaceImplLegacy.cpp b/services/audiopolicy/AudioPolicyInterfaceImplLegacy.cpp
-index 563e741..9643940 100644
+index 1467188..3475c3d 100644
 --- a/services/audiopolicy/AudioPolicyInterfaceImplLegacy.cpp
 +++ b/services/audiopolicy/AudioPolicyInterfaceImplLegacy.cpp
-@@ -517,6 +517,9 @@ status_t AudioPolicyService::queryDefaultPreProcessing(int audioSession,
- 
- bool AudioPolicyService::isOffloadSupported(const audio_offload_info_t& info)
+@@ -501,6 +501,9 @@ status_t AudioPolicyService::queryDefaultPreProcessing(int audioSession,
+                                                        effect_descriptor_t *descriptors,
+                                                        uint32_t *count)
  {
-+#if HAVE_PRE_KITKAT_AUDIO_BLOB
++#ifdef HAVE_PRE_KITKAT_AUDIO_BLOB
 +    return false;
 +#endif
      if (mpAudioPolicy == NULL) {
-         ALOGV("mpAudioPolicy == NULL");
-         return false;
+         *count = 0;
+         return NO_INIT;
 -- 
 1.9.1
 

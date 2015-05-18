@@ -11,6 +11,11 @@ pre_clean() {
     cd $tmp
 }
 
+apply() {
+    patch -p1 -i $1
+    git commit -am "$1"
+}
+
 apply_all() {
     tmp=$PWD
     cd $1
@@ -18,7 +23,7 @@ apply_all() {
     for i in $( ls *.patch )
     do
         echo "applying "$i" for "$1
-        git am $i
+        apply $i
     done
  
     cd $tmp

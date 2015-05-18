@@ -4,7 +4,6 @@ pre_clean() {
     tmp=$PWD
     cd $1
 
-    # get rid of any uncommitted or unstaged changes
     git reset --hard
     git clean -fd
     git am --abort
@@ -18,6 +17,7 @@ apply_all() {
 
     for i in $( ls *.patch )
     do
+        echo "applying "$i" for "$1
         git am $i
     done
  
@@ -25,6 +25,8 @@ apply_all() {
 }
 
 # pre clean 
+
+echo "get rid of any uncommitted or unstaged changes"
 
 pre_clean bionic
 pre_clean build

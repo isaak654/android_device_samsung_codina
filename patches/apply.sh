@@ -4,9 +4,8 @@ pre_clean() {
     tmp=$PWD
     cd $1
 
-    git reset --hard
-    git clean -fd
-    git am --abort
+    git reset --hard > /dev/null
+    git clean -fd > /dev/null
 
     cd $tmp
 }

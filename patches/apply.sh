@@ -60,8 +60,6 @@ apply_all frameworks/base/
 apply_all frameworks/native/
 apply_all frameworks/opt/net/wifi/
 apply_all frameworks/opt/telephony/
-apply_all packages/apps/Bluetooth/ 
-apply_all packages/apps/Settings/
 apply_all packages/services/Telecomm
 apply_all packages/services/Telephony
 apply_all system/core
